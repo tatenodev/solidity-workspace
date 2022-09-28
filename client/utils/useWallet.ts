@@ -7,7 +7,7 @@ import CONTRACT_ABI from "../abi/Emitter.json";
 export const useWallet = () => {
   const [ethereum, setEthereum] = useState<BaseProvider>();
   const [currentAccount, setCurrentAccount] = useState("");
-  const CONTRACT_ADDRESS = "0x696d55349F80AAbD0B3b1180837682c22DA3E904";
+  const CONTRACT_ADDRESS = "0x8481B678362365DC86b227c1207b6070261f8573";
 
   const checkIfWalletIsConnected = useCallback(async () => {
     if (!ethereum) return;
@@ -44,6 +44,8 @@ export const useWallet = () => {
   };
 
   const remittance = async (address: string, amount: string) => {
+    console.log("address", address);
+    console.log("amount", amount);
     if (!ethereum) return alert("Get MetaMask!");
 
     const EmitterContract = getSmartContract();
@@ -54,6 +56,7 @@ export const useWallet = () => {
       from: currentAccount,
       value: parsedAmount._hex,
     };
+    console.log("parseAmount", parsedAmount, parsedAmount._hex);
 
     const txHash = await ethereum.request({
       method: "eth_sendTransaction",
@@ -61,7 +64,10 @@ export const useWallet = () => {
     });
 
     if (!EmitterContract) return;
-    const transactionHash = await EmitterContract.addList(address, amount);
+    const transactionHash = await EmitterContract.addList(
+      address,
+      parsedAmount
+    );
     await transactionHash.wait();
     console.log("送金成功");
   };

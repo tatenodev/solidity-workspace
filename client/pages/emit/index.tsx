@@ -4,7 +4,7 @@ import { useWallet } from "../../utils/useWallet";
 
 const Emit: NextPage = () => {
   const [address, setAddress] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("0");
   const {
     currentAccount,
     checkIfWalletIsConnected,
@@ -37,7 +37,6 @@ const Emit: NextPage = () => {
           type="text"
           placeholder="Address"
           id="address"
-          name="address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
@@ -45,10 +44,10 @@ const Emit: NextPage = () => {
       <div>
         <label htmlFor="amount">Amount: </label>
         <input
-          type="text"
+          type="number"
+          step="0.0001"
           placeholder="Amount"
           id="amount"
-          name="amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
