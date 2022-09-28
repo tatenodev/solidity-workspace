@@ -3,7 +3,7 @@ import { BaseProvider } from "@metamask/providers";
 import { BigNumber, ethers } from "ethers";
 import CONTRACT_ABI from "../abi/Emitter.json";
 
-// emitのページ用
+// emit page
 export const useWallet = () => {
   const [ethereum, setEthereum] = useState<BaseProvider>();
   const [currentAccount, setCurrentAccount] = useState("");

@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { useWallet } from "../../utils/useWallet";
+import { useWallet } from "../../hooks/useWallet";
 
 const Emit: NextPage = () => {
   const [address, setAddress] = useState("");
