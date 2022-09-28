@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { BaseProvider } from "@metamask/providers";
+import { ethers } from "ethers";
+import CONTRACT_ABI from "../abi/Emitter.json";
 
+// emitのページ用
 export const useWallet = () => {
   const [ethereum, setEthereum] = useState<BaseProvider>();
   const [currentAccount, setCurrentAccount] = useState("");
+  const CONTRACT_ADDRESS = "0x696d55349F80AAbD0B3b1180837682c22DA3E904";
 
   const checkIfWalletIsConnected = useCallback(async () => {
     if (!ethereum) return;
@@ -26,8 +30,40 @@ export const useWallet = () => {
     }
   };
 
-  const remittance = async () => {
+  const getSmartContract = () => {
+    if (!ethereum) return;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const emitterContract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      CONTRACT_ABI.abi,
+      signer
+    );
+
+    return emitterContract;
+  };
+
+  const remittance = async (address: string, amount: string) => {
     if (!ethereum) return alert("Get MetaMask!");
+
+    const EmitterContract = getSmartContract();
+    const parsedAmount = ethers.utils.parseEther(amount);
+    const transactionParams = {
+      gas: "0x2710",
+      to: address,
+      from: currentAccount,
+      value: parsedAmount._hex,
+    };
+
+    const txHash = await ethereum.request({
+      method: "eth_sendTransaction",
+      params: [transactionParams],
+    });
+
+    if (!EmitterContract) return;
+    const transactionHash = await EmitterContract.addList(address, amount);
+    await transactionHash.wait();
+    console.log("送金成功");
   };
 
   useEffect(() => {
@@ -39,5 +75,6 @@ export const useWallet = () => {
     currentAccount,
     checkIfWalletIsConnected,
     connectWallet,
+    remittance,
   };
 };

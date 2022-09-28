@@ -5,11 +5,16 @@ import { useWallet } from "../../utils/useWallet";
 const Emit: NextPage = () => {
   const [address, setAddress] = useState("");
   const [amount, setAmount] = useState("");
-  const { currentAccount, checkIfWalletIsConnected, connectWallet } =
-    useWallet();
+  const {
+    currentAccount,
+    checkIfWalletIsConnected,
+    connectWallet,
+    remittance,
+  } = useWallet();
 
   const handleSubmit = () => {
-    if (!address || amount) return;
+    if (!address || !amount) return;
+    remittance(address, amount);
   };
 
   useEffect(() => {
@@ -50,7 +55,9 @@ const Emit: NextPage = () => {
       </div>
 
       <div>
-        <button type="button">送金</button>
+        <button type="button" onClick={handleSubmit}>
+          送金
+        </button>
       </div>
     </div>
   );
