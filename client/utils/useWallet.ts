@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { BaseProvider } from "@metamask/providers";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import CONTRACT_ABI from "../abi/Emitter.json";
 
 // emitのページ用
@@ -30,7 +30,7 @@ export const useWallet = () => {
     }
   };
 
-  const getSmartContract = () => {
+  const getSmartContract = useCallback(() => {
     if (!ethereum) return;
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -41,7 +41,7 @@ export const useWallet = () => {
     );
 
     return emitterContract;
-  };
+  }, [ethereum]);
 
   const remittance = async (address: string, amount: string) => {
     console.log("address", address);
@@ -56,7 +56,6 @@ export const useWallet = () => {
       from: currentAccount,
       value: parsedAmount._hex,
     };
-    console.log("parseAmount", parsedAmount, parsedAmount._hex);
 
     const txHash = await ethereum.request({
       method: "eth_sendTransaction",
@@ -76,6 +75,23 @@ export const useWallet = () => {
     const { ethereum } = window;
     setEthereum(ethereum);
   }, []);
+
+  // eventの監視
+  useEffect(() => {
+    const onAdd = (from: string, reciever: string, amount: BigNumber) => {
+      console.log("===== EVENT =====");
+      console.log("from:", from);
+      console.log("reciver:", reciever);
+      console.log("amount:", amount.toNumber());
+    };
+
+    const EmitterContract = getSmartContract();
+    EmitterContract?.on("add", onAdd);
+
+    return () => {
+      EmitterContract?.off("add", onAdd);
+    };
+  }, [getSmartContract]);
 
   return {
     currentAccount,
