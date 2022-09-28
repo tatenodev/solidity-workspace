@@ -26,6 +26,10 @@ export const useWallet = () => {
     }
   };
 
+  const remittance = async () => {
+    if (!ethereum) return alert("Get MetaMask!");
+  };
+
   useEffect(() => {
     const { ethereum } = window;
     setEthereum(ethereum);

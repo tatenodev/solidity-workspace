@@ -8,7 +8,13 @@ module.exports = {
     localhost: {
       url: "http://127.0.0.1:8545/",
       accounts: [
-        process.env.SECRETKEY
+        process.env.SECRETKEY_LOCALHOST
+      ]
+    },
+    goerli: {
+      url: process.env.ALCHEMY,
+      accounts: [
+        process.env.SECRETKEY_GOERLI
       ]
     }
   }
