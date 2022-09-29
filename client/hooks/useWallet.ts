@@ -3,10 +3,17 @@ import { BaseProvider } from "@metamask/providers";
 import { BigNumber, ethers } from "ethers";
 import CONTRACT_ABI from "../abi/Emitter.json";
 
+type Transactor = {
+  from: string;
+  reciever: string;
+  amount: BigNumber;
+};
+
 // emit page
 export const useWallet = () => {
   const [ethereum, setEthereum] = useState<BaseProvider>();
   const [currentAccount, setCurrentAccount] = useState("");
+  const [transactor, setTransactor] = useState<Transactor | null>(null);
   const CONTRACT_ADDRESS = "0x8481B678362365DC86b227c1207b6070261f8573";
 
   const checkIfWalletIsConnected = useCallback(async () => {
@@ -61,6 +68,7 @@ export const useWallet = () => {
       method: "eth_sendTransaction",
       params: [transactionParams],
     });
+    console.log("txHash: ", txHash);
 
     if (!EmitterContract) return;
     const transactionHash = await EmitterContract.addList(
@@ -83,6 +91,7 @@ export const useWallet = () => {
       console.log("from:", from);
       console.log("reciver:", reciever);
       console.log("amount:", amount.toNumber());
+      setTransactor({ from, reciever, amount });
     };
 
     const EmitterContract = getSmartContract();
@@ -98,5 +107,6 @@ export const useWallet = () => {
     checkIfWalletIsConnected,
     connectWallet,
     remittance,
+    transactor,
   };
 };

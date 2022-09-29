@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useWallet } from "../../hooks/useWallet";
@@ -10,6 +11,7 @@ const Emit: NextPage = () => {
     checkIfWalletIsConnected,
     connectWallet,
     remittance,
+    transactor,
   } = useWallet();
 
   const handleSubmit = () => {
@@ -58,6 +60,17 @@ const Emit: NextPage = () => {
           送金
         </button>
       </div>
+
+      {transactor && (
+        <>
+          <div>送金完了しました</div>
+          <div>from: {transactor.from}</div>
+          <div>reciever: {transactor.reciever}</div>
+          <div>
+            amount: {ethers.utils.formatEther(transactor.amount.toNumber())}
+          </div>
+        </>
+      )}
     </div>
   );
 };
