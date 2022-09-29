@@ -95,12 +95,26 @@ export const useWallet = () => {
     };
 
     const EmitterContract = getSmartContract();
-    EmitterContract?.on("add", onAdd);
+
+    // フィルターかけない場合
+    // EmitterContract?.on("add", onAdd);
+
+    /**
+     * solidityで指定したindexedでフィルターをかける
+     * event add(address indexed from, address indexed reciever, uint256 amount);
+     * 以下ではfromのaddressに対してのみ(自分が送金したeventのみ監視する)
+     */
+
+    const filter =
+      currentAccount &&
+      EmitterContract?.filters.add(currentAccount, null, null);
+
+    filter && EmitterContract?.on(filter, onAdd);
 
     return () => {
       EmitterContract?.off("add", onAdd);
     };
-  }, [getSmartContract]);
+  }, [getSmartContract, currentAccount]);
 
   return {
     currentAccount,
