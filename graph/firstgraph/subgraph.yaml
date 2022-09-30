@@ -1,3 +1,6 @@
+# manifest
+# https://ethereum.org/ja/developers/tutorials/the-graph-fixing-web3-data-querying/#:~:text=mapping.ts)-,Manifest%20(subgraph.yaml),-The%20manifest%20is
+
 specVersion: 0.0.4
 description: My first subgraph
 schema:

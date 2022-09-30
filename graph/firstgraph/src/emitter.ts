@@ -1,3 +1,6 @@
+// mapping
+// https://ethereum.org/ja/developers/tutorials/the-graph-fixing-web3-data-querying/#:~:text=%E3%81%99%E3%81%B9%E3%81%A6%E8%A1%A8%E7%A4%BA-,Mapping%20(mapping.ts),-The%20mapping%20file
+
 import { BigInt } from "@graphprotocol/graph-ts";
 import { Emitter, add } from "../generated/Emitter/Emitter";
 import { ExampleEmitter } from "../generated/schema";
