@@ -1,0 +1,14 @@
+# type ExampleEntity @entity {
+#   id: ID!
+#   count: BigInt!
+#   from: Bytes! # address
+#   reciever: Bytes! # address
+# }
+
+type ExampleEmitter @entity {
+  id: ID!
+  from: Bytes!
+  reciever: Bytes!
+  amount: BigInt!
+  blockhash: Bytes!
+}
