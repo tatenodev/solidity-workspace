@@ -99,7 +99,7 @@ const Emit: NextPage = () => {
                 <li>id: {id}</li>
                 <li>from: {from}</li>
                 <li>reciever: {reciever}</li>
-                <li>amount: {amount}</li>
+                <li>amount: {ethers.utils.formatEther(amount)}</li>
                 <li>blockhash: {blockhash}</li>
               </ul>
             </div>
