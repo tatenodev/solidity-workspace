@@ -1,4 +1,4 @@
-// mapping
+// mapping.ts
 // https://ethereum.org/ja/developers/tutorials/the-graph-fixing-web3-data-querying/#:~:text=%E3%81%99%E3%81%B9%E3%81%A6%E8%A1%A8%E7%A4%BA-,Mapping%20(mapping.ts),-The%20mapping%20file
 
 import { BigInt } from "@graphprotocol/graph-ts";
@@ -8,12 +8,17 @@ import { ExampleEmitter } from "../generated/schema";
 export function handleadd(event: add): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEmitter.load(event.transaction.from.toHex());
+  // event.transaction.from.toHex() だけだとidが一意でなくなる可能性がある?’
+  let entity = ExampleEmitter.load(
+    event.transaction.from.toHex() + "-" + event.logIndex.toString()
+  );
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
-    entity = new ExampleEmitter(event.transaction.from.toHex());
+    entity = new ExampleEmitter(
+      event.transaction.from.toHex() + "-" + event.logIndex.toString()
+    );
 
     // Entity fields can be set using simple assignments
     entity.amount = BigInt.fromI32(0);
