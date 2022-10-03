@@ -1,3 +1,4 @@
+import { gql, useQuery } from "@apollo/client";
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
@@ -22,6 +23,24 @@ const Emit: NextPage = () => {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [checkIfWalletIsConnected]);
+
+  // TODO: graphql関連は別ファイルへ分割する
+  const GET_EMITTERS = gql`
+    query GetEmitters {
+      exampleEmitters {
+        id
+        from
+        reciever
+        amount
+        blockhash
+      }
+    }
+  `;
+
+  const { loading, error, data } = useQuery(GET_EMITTERS);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
+  console.log("data: ", data);
 
   return (
     <div>
@@ -71,6 +90,22 @@ const Emit: NextPage = () => {
           </div>
         </>
       )}
+      <div>
+        <p>query:</p>
+        {data.exampleEmitters.map(
+          ({ id, from, reciever, amount, blockhash }: any) => (
+            <div key={id}>
+              <ul>
+                <li>id: {id}</li>
+                <li>from: {from}</li>
+                <li>reciever: {reciever}</li>
+                <li>amount: {amount}</li>
+                <li>blockhash: {blockhash}</li>
+              </ul>
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 };
