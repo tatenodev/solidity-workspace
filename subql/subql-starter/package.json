@@ -32,6 +32,6 @@
     "@subql/substrate-wasm-processor": "latest"
   },
   "exports": {
-    "chaintypes": "src/chaintypes.ts"
+    "chaintypes": "./src/chaintypes.ts"
   }
 }
