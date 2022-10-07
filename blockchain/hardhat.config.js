@@ -14,7 +14,14 @@ module.exports = {
     goerli: {
       url: process.env.ALCHEMY,
       accounts: [
-        process.env.SECRETKEY_GOERLI
+        process.env.SECRETKEY_DEV_MAIN
+      ]
+    },
+    shibuya: {
+      url:"https://rpc.shibuya.astar.network:8545",
+      chainId:81,
+      accounts: [
+        process.env.SECRETKEY_DEV_MAIN
       ]
     }
   }
