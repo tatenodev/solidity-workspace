@@ -17,9 +17,9 @@ module.exports = {
         process.env.SECRETKEY_DEV_MAIN
       ]
     },
-    shibuya: {
-      url:"https://rpc.shibuya.astar.network:8545",
-      chainId:81,
+    shiden: {
+      url: "https://evm.shiden.astar.network",
+      chainId: 336,
       accounts: [
         process.env.SECRETKEY_DEV_MAIN
       ]

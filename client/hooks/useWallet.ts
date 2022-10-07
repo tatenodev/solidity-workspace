@@ -14,7 +14,10 @@ export const useWallet = () => {
   const [ethereum, setEthereum] = useState<BaseProvider>();
   const [currentAccount, setCurrentAccount] = useState("");
   const [transactor, setTransactor] = useState<Transactor | null>(null);
+  // TheGraph用(ethereum)
   const CONTRACT_ADDRESS = "0x8481B678362365DC86b227c1207b6070261f8573";
+  // SubQuery用(Shiden)
+  // const CONTRACT_ADDRESS = "0x021fD209C4cDa5e36ea2e8301b11aBAd9e94e4b5";
 
   const checkIfWalletIsConnected = useCallback(async () => {
     if (!ethereum) return;
