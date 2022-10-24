@@ -41,6 +41,36 @@ contract Messenger {
     );
   }
 
+  function accept(uint256 _index) public {
+    confirmMessage(_index);
+    Message memory message = messagesAtAddress[msg.sender][_index];
+    sendAvax(message.receiver, message.depositInWei);
+  }
+
+  function deny(uint256 _index) public payable {
+    confirmMessage(_index);
+    Message memory message = messagesAtAddress[msg.sender][_index];
+    sendAvax(message.sender, message.depositInWei);
+  }
+
+  function confirmMessage(uint256 _index) private {
+    Message storage message = messagesAtAddress[msg.sender][_index];
+    require(
+      msg.sender == message.receiver,
+      "Only the receiver can confirmMessage the message"
+    );
+    require(
+      message.isPending == true,
+      "This message has already been confirmed"
+    );
+    message.isPending = false;
+  }
+
+  function sendAvax(address payable _to, uint256 _amountInWei) private {
+    (bool success, ) = (_to).call{value: _amountInWei}("");
+    require(success, "Failed to withdraw AVAX from contract");
+  }
+
   function getOwnMessages() public view returns(Message[] memory) {
     return messagesAtAddress[msg.sender];
   }
