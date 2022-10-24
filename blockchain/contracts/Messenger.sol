@@ -17,7 +17,7 @@ contract Messenger {
 
   mapping (address => Message[]) private messagesAtAddress;
   
-  constructor() {
+  constructor() payable {
     console.log('Here is my messenger smart contract.');
   }
 
